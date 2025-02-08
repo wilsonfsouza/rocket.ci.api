@@ -24,6 +24,12 @@ jobs:
     - run: npm ci
     - run: npm run test
 
+    - name: Generate tag
+      id: generate_tag
+      run: |
+        SHA=$(echo $GITHUB_SHA | head -c7)
+        echo "sha=$SHA" >> $GITHUB_OUTPUT
+
     - name: Build docker image
-      run: docker build -t rocketdevops-ci-api:latest .
+      run: docker build -t rocketdevops-ci-api:${{ steps.generate_tag.outputs.sha }} .
 

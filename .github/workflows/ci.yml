@@ -38,9 +38,14 @@ jobs:
         username: ${{ secrets.DOCKERHUB_USERNAME }}
         password: ${{ secrets.DOCKERHUB_PASSWORD }}
 
-    - name: Build docker image
-      run: docker build -t ${{ secrets.CONTAINER_REGISTRY_URL }}/rocketdevops-ci-api:${{ steps.generate_tag.outputs.sha }} .
+    # - name: Build docker image
+    #   run: docker build -t ${{ secrets.CONTAINER_REGISTRY_URL }}/rocketdevops-ci-api:${{ steps.generate_tag.outputs.sha }} .
 
-    - name: Push image to Container Registry
-      run: docker push ${{ secrets.CONTAINER_REGISTRY_URL }}/rocketdevops-ci-api:${{ steps.generate_tag.outputs.sha }}
+    # - name: Push image to Container Registry
+    #   run: docker push ${{ secrets.CONTAINER_REGISTRY_URL }}/rocketdevops-ci-api:${{ steps.generate_tag.outputs.sha }}
 
+    - name: Build docker image and push image to Container Registry
+      uses: docker/build-push-action@v5
+      with:
+        push: true
+        tags: ${{ secrets.CONTAINER_REGISTRY_URL }}/rocketdevops-ci-api:${{ steps.generate_tag.outputs.sha }}, ${{ secrets.CONTAINER_REGISTRY_URL }}/rocketdevops-ci-api:latest
